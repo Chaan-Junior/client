@@ -2,9 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ProductDisplay from "./pages/ProductDisplay";
 import ProductForm from "./pages/ProductForm";
-import Notification from "./pages/Notification";
+import ProductUpdate from "./pages/ProductUpdate";
 
 const router = createBrowserRouter([
   {
@@ -16,12 +15,8 @@ const router = createBrowserRouter([
     element: <ProductForm />,
   },
   {
-    path: "/displayProduct",
-    element: <ProductDisplay />,
-  },
-  {
-    path: "/notification",
-    element: <Notification />,
+    path: "/updateProduct/:id",
+    element: <ProductUpdate />,
   },
 ]);
 

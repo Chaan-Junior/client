@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/ProductDisplay.css";
-import Navigation from "../components/Navbar";
+import { Link } from "react-router-dom";
 
 function ProductDisplay() {
   const [products, setProducts] = useState([]);
@@ -18,14 +18,24 @@ function ProductDisplay() {
     fetchProducts();
   }, []);
 
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:3001/api/products/${id}`)
+      .then((response) => {
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div>
-      <Navigation />
       <br />
-      <h1 id="heading"> Available Products</h1>
+      <h1 id="heading"> Available Products </h1>
       <div className="product-display">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
+          <div key={product._id} className="product-card">
             <img
               src={product.productImage}
               alt={product.productName}
@@ -43,8 +53,18 @@ function ProductDisplay() {
 
               <p className="product-price">Price: ${product.productPrice}</p>
 
-              <button className="update-product">Update</button>
-              <button className="delete-product">Delete</button>
+              <Link
+                className="update-product"
+                to={`/updateProduct/${product._id}`}
+              >
+                Update
+              </Link>
+              <button
+                className="delete-product"
+                onClick={(e) => handleDelete(product._id)}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}

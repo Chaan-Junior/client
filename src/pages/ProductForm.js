@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
+import Navigation from "../components/Navbar";
 import "../App.css";
 import "../styles/ProductForm.css";
-import Navigation from "../components/Navbar";
 
 const ProductForm = () => {
   const [productName, setProductName] = useState("");
@@ -10,9 +10,7 @@ const ProductForm = () => {
   const [productType, setProductType] = useState("");
   const [productQuantity, setProductQuantity] = useState("");
   const [productPrice, setProductPrice] = useState("");
-  const [productImage, setProductImage] = useState(
-    "https://unsplash.com/photos/Hnp-cs9QVOc"
-  );
+  const [productImage, setProductImage] = useState("");
 
   const [formErrors, setFormErrors] = useState({
     productName: "",
@@ -30,31 +28,44 @@ const ProductForm = () => {
     if (!productName.trim()) {
       newErrors.productName = "Product Name is required.";
       isValid = false;
+    } else {
+      newErrors.productName = "";
     }
 
     if (!productDescription.trim()) {
       newErrors.productDescription = "Product Description is required.";
       isValid = false;
+    } else {
+      newErrors.productDescription = "";
     }
 
     if (!productType.trim()) {
       newErrors.productType = "Product Type is required.";
       isValid = false;
+    } else {
+      newErrors.productType = "";
     }
 
-    if (!productQuantity || isNaN(productQuantity)) {
-      newErrors.productQuantity = "Product Quantity must be a number.";
+    if (!productQuantity || isNaN(productQuantity) || productQuantity < 0) {
+      newErrors.productQuantity =
+        "Product Quantity must be a non-negative number.";
       isValid = false;
+    } else {
+      newErrors.productQuantity = "";
     }
 
-    if (!productPrice || isNaN(productPrice)) {
-      newErrors.productPrice = "Product Price must be a number.";
+    if (!productPrice || isNaN(productPrice) || productPrice <= 0) {
+      newErrors.productPrice = "Product Price must be a positive number.";
       isValid = false;
+    } else {
+      newErrors.productPrice = "";
     }
 
     if (!productImage.trim()) {
       newErrors.productImage = "Product Image URL is required.";
       isValid = false;
+    } else {
+      newErrors.productImage = "";
     }
 
     setFormErrors(newErrors);
@@ -74,6 +85,10 @@ const ProductForm = () => {
         })
         .then((response) => {
           alert("Successfully Created");
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Failed to create the product.");
         });
     } else {
       alert("Please fill in all the required fields correctly.");
@@ -102,6 +117,7 @@ const ProductForm = () => {
             }}
             style={{ borderColor: formErrors.productName ? "red" : "" }}
           />
+          <div className="error">{formErrors.productName}</div>
           <label>Product Description</label>
           <input
             type="text"
@@ -110,6 +126,7 @@ const ProductForm = () => {
             }}
             style={{ borderColor: formErrors.productDescription ? "red" : "" }}
           />
+          <div className="error">{formErrors.productDescription}</div>
           <label>Product Type</label>
           <input
             type="text"
@@ -118,6 +135,7 @@ const ProductForm = () => {
             }}
             style={{ borderColor: formErrors.productType ? "red" : "" }}
           />
+          <div className="error">{formErrors.productType}</div>
           <label>Product Quantity</label>
           <input
             type="number"
@@ -126,6 +144,7 @@ const ProductForm = () => {
             }}
             style={{ borderColor: formErrors.productQuantity ? "red" : "" }}
           />
+          <div className="error">{formErrors.productQuantity}</div>
           <label>Product Price</label>
           <input
             type="number"
@@ -134,6 +153,7 @@ const ProductForm = () => {
             }}
             style={{ borderColor: formErrors.productPrice ? "red" : "" }}
           />
+          <div className="error">{formErrors.productPrice}</div>
           <label>Product Image URL</label>
           <input
             type="text"
@@ -142,6 +162,7 @@ const ProductForm = () => {
             }}
             style={{ borderColor: formErrors.productImage ? "red" : "" }}
           />
+          <div className="error">{formErrors.productImage}</div>
           <br /> <br />
           <button onClick={createProduct}>Add Product</button>
         </div>
